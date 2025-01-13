@@ -1,4 +1,4 @@
-import { Advertisement } from 'src/advertisements/advertisement.entity';
+import { Advertisement } from 'src/advertisements/entities';
 import { City } from 'src/city/cities.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 

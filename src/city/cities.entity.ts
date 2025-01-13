@@ -1,4 +1,4 @@
-import { Advertisement } from 'src/advertisements/advertisement.entity';
+import { Advertisement } from 'src/advertisements/entities';
 import { State } from 'src/states/states.entity';
 import {
   Column,
