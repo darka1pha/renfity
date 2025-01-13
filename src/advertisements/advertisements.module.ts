@@ -1,36 +1,42 @@
 import { Module } from '@nestjs/common';
-import { AdvertisementsService } from './advertisements.service';
-import { AdvertisementsController } from './advertisements.controller';
-import { Advertisement } from './advertisement.entity';
+import { AdvertisementsService } from './services/advertisements.service';
+import { AdvertisementsController } from './controllers/advertisements.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
-import { AdvertisementsRepository } from './advertisements.repository';
+import { AdvertisementsRepository } from './repositories/advertisements.repository';
 import { DataSource } from 'typeorm';
 import { CitiesModule } from 'src/city/cities.module';
 import { StatesModule } from 'src/states/states.module';
-import { CitiesService } from 'src/city/cities.service';
-import { StateService } from 'src/states/states.service';
+import { Advertisement } from './entities';
+import { Facility } from './entities/facility.entity';
+import { FacilitiesService } from './services/facilities.service';
+import { FacilitiesController } from './controllers/facilities.controller';
+import { FacilitiesRepository } from './repositories/facilities.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Advertisement]),
+    TypeOrmModule.forFeature([Advertisement, Facility]),
     AuthModule,
     CitiesModule,
     StatesModule,
   ],
   providers: [
     AdvertisementsService,
+    FacilitiesService,
     {
       provide: AdvertisementsRepository,
-      useFactory: (
-        dataSource: DataSource,
-        citiesService: CitiesService,
-        statesService: StateService,
-      ) => new AdvertisementsRepository(dataSource),
+      useFactory: (dataSource: DataSource) =>
+        new AdvertisementsRepository(dataSource),
+      inject: [DataSource],
+    },
+    {
+      provide: FacilitiesRepository,
+      useFactory: (dataSource: DataSource) =>
+        new FacilitiesRepository(dataSource),
       inject: [DataSource],
     },
   ],
-  controllers: [AdvertisementsController],
+  controllers: [AdvertisementsController, FacilitiesController],
   exports: [TypeOrmModule],
 })
 export class AdvertisementsModule {}

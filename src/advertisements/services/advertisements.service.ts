@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AdvertisementsRepository } from './advertisements.repository';
-import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
+import { AdvertisementsRepository } from '../repositories/advertisements.repository';
+import { CreateAdvertisementDto } from '../dto/create-advertisement.dto';
 import { CitiesService } from 'src/city/cities.service';
 import { StateService } from 'src/states/states.service';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class AdvertisementsService {
@@ -18,19 +19,22 @@ export class AdvertisementsService {
     return await this.advertisementsRepository.getAdvertisements();
   }
 
-  async createAdvertisement(body: CreateAdvertisementDto) {
+  async createAdvertisement(body: CreateAdvertisementDto, user: User) {
     const { cityId, stateId, ...rest } = body;
 
-    // Fetch and validate city
     const city = await this.citiesService.getCityById(cityId);
 
-    // Fetch and validate state
     const state = await this.stateService.getStateById(stateId);
 
-    return await this.advertisementsRepository.createAdvertisement({
-      ...rest,
-      city,
-      state,
-    });
+    // const facilities =
+
+    return await this.advertisementsRepository.createAdvertisement(
+      {
+        ...rest,
+        city,
+        state,
+      },
+      user,
+    );
   }
 }
