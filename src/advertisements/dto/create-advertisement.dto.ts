@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDateString,
   IsEnum,
@@ -98,9 +99,14 @@ export class CreateAdvertisementDto {
   // For Repository Layer
   @ValidateIf((dto) => dto.stateId === undefined)
   @IsOptional()
-  state?: State; // Replace `object` with your `State` type.
+  state?: State;
 
   @ValidateIf((dto) => dto.cityId === undefined)
   @IsOptional()
-  city?: City; // Replace `object` with your `City` type.
+  city?: City;
+
+  @IsArray()
+  @IsNotEmpty()
+  @IsString({ each: true })
+  facilities?: string[];
 }
