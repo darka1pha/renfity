@@ -13,7 +13,15 @@ export class UsersRepository extends Repository<User> {
     super(User, dataSource.manager);
   }
 
-  async createUser({ username, password, name, lastname }: CreateUserDto) {
+  async createUser({
+    username,
+    password,
+    name,
+    lastname,
+    mobile,
+    agency,
+    type,
+  }: CreateUserDto) {
     // hash
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(password, salt);
@@ -23,6 +31,9 @@ export class UsersRepository extends Repository<User> {
       password: hash,
       name,
       lastname,
+      mobile,
+      agency,
+      type,
     });
 
     try {
@@ -35,6 +46,7 @@ export class UsersRepository extends Repository<User> {
       if (error.code === '23505') {
         throw new ConflictException('User already exists');
       }
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }

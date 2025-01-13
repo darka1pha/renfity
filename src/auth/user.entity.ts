@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserType } from './user.type.enum';
+import { Advertisement } from 'src/advertisements/entities';
 
 @Entity()
 export class User {
@@ -21,18 +22,20 @@ export class User {
   @Column()
   mobile: string;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   profilePic: string;
 
-  @Column()
+  @Column({ nullable: true })
   agency: string;
 
   @Column()
   type: UserType;
 
-  // @OneToMany(() => Task, (task) => task.user, { eager: true })
-  // tasks: Task[];
+  @OneToMany(() => Advertisement, (advertisement) => advertisement.user, {
+    eager: true,
+  })
+  advertisements: Advertisement[];
 }
