@@ -83,6 +83,9 @@ export class Advertisement {
   @JoinColumn({ name: 'userId' })
   user: User;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
   @ManyToMany(() => Facility, (facility) => facility.advertisements, {
     cascade: true,
   })

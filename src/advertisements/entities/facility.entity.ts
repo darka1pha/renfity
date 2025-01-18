@@ -9,6 +9,9 @@ export class Facility {
   @Column()
   title: string;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
   @ManyToMany(() => Advertisement, (advertisement) => advertisement.facilities)
   advertisements: Advertisement[];
 }
