@@ -1,8 +1,9 @@
-import { DataSource, In, Repository } from 'typeorm';
+import { DataSource, In, Not, Repository } from 'typeorm';
 import { CreatePropertyDto } from '../dto/create-property.dto';
 import { User } from 'src/auth/user.entity';
 import { Property } from '../entities';
 import { Facility } from '../entities/facility.entity';
+import { NotFoundException } from '@nestjs/common';
 
 export class PropertiesRepository extends Repository<Property> {
   constructor(dataSource: DataSource) {
@@ -29,9 +30,16 @@ export class PropertiesRepository extends Repository<Property> {
       .leftJoinAndSelect('property.state', 'state')
       .leftJoinAndSelect('property.city', 'city')
       .leftJoinAndSelect('property.user', 'user')
-      .leftJoinAndSelect('property.facilities', 'facilities');
+      .leftJoinAndSelect('property.facilities', 'facilities')
+      .leftJoinAndSelect('property.likedBy', 'likedBy'); // Join the likedBy relation
 
-    return await query.getMany();
+    const properties = await query.getMany();
+
+    // Add isLiked field dynamically
+    return properties.map((property) => ({
+      ...property,
+      isLiked: property.likedBy.some((likedUser) => likedUser.id === user.id),
+    }));
   }
 
   async getPropertiesById(id: number, user: User) {
@@ -40,6 +48,7 @@ export class PropertiesRepository extends Repository<Property> {
       .leftJoinAndSelect('property.city', 'city')
       .leftJoinAndSelect('property.user', 'user')
       .leftJoinAndSelect('property.facilities', 'facilities')
+      .leftJoinAndSelect('property.likedBy', 'likedBy') // Join likedBy relation
       .where('property.id = :id', { id });
 
     // Increment the views count
@@ -49,7 +58,17 @@ export class PropertiesRepository extends Repository<Property> {
       .where('id = :id', { id })
       .execute();
 
-    return await query.getOne();
+    const property = await query.getOne();
+
+    if (!property) {
+      throw new NotFoundException('Property not found'); // Optional: handle not found case
+    }
+
+    // Add the isLiked field dynamically
+    return {
+      ...property,
+      isLiked: property.likedBy.some((likedUser) => likedUser.id === user.id),
+    };
   }
 
   async updateProperties() {}

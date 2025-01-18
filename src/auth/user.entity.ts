@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserType } from './user.type.enum';
 import { Property } from 'src/properties/entities';
 
@@ -38,4 +44,7 @@ export class User {
     eager: true,
   })
   properties: Property[];
+
+  @ManyToMany(() => Property, (property) => property.likedBy)
+  likedProperties: Property[];
 }

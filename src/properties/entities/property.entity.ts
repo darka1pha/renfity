@@ -94,6 +94,9 @@ export class Property {
   })
   @JoinTable()
   facilities: Facility[];
+
+  @ManyToMany(() => User, (user) => user.likedProperties)
+  likedBy: User[];
 }
 
 // Relationships
