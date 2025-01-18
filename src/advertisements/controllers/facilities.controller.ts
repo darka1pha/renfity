@@ -5,7 +5,6 @@ import { CreateFacilityDto } from '../dto/create-facility.dto';
 import { AdminGuard } from 'src/auth/admin.guard';
 
 @Controller()
-@UseGuards(AuthGuard())
 export class FacilitiesController {
   constructor(private facilitiesService: FacilitiesService) {}
 
@@ -15,6 +14,7 @@ export class FacilitiesController {
   }
 
   @Post('facilities')
+  @UseGuards(AuthGuard())
   @UseGuards(AdminGuard)
   createFacility(@Body() body: CreateFacilityDto) {
     return this.facilitiesService.createFacility(body);

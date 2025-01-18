@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdvertisementsRepository } from '../repositories/advertisements.repository';
 import { CreateAdvertisementDto } from '../dto/create-advertisement.dto';
-import { CitiesService } from 'src/city/cities.service';
+import { CitiesService } from 'src/cities/cities.service';
 import { StateService } from 'src/states/states.service';
 import { User } from 'src/auth/user.entity';
 

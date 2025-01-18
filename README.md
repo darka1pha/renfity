@@ -1,85 +1,105 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Rentify
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository contains the source code for **Rentify**, a **House Rent Website** built using **NestJS**, **PostgreSQL**, and **TypeORM**. The application provides a platform for property owners to list their properties for rent and for users to search and book available houses.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **Authentication**: User registration and login with secure JWT-based authentication.
+- **Advertisement Management**:
+  - List advertisements for rent.
+  - Update or delete advertisement listings.
+- **Search and Filter**: Search advertisement by location, price range, and other filters.
+- **Booking System**: Renters can book advertisement directly through the platform.
+- **Admin Panel**: Manage users and advertisement listings.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies Used
 
-## Project setup
+- **Backend Framework**: [NestJS](https://nestjs.com/) - A progressive Node.js framework.
+- **Database**: [PostgreSQL](https://www.postgresql.org/) - A powerful, open-source relational database.
+- **ORM**: [TypeORM](https://typeorm.io/) - An ORM for TypeScript and JavaScript.
 
-```bash
-$ pnpm install
-```
+## Prerequisites
 
-## Compile and run the project
+- Node.js (v16 or later)
+- PostgreSQL (v12 or later)
+- npm or yarn package manager
 
-```bash
-# development
-$ pnpm run start
+## Installation
 
-# watch mode
-$ pnpm run start:dev
+1. Clone the repository:
 
-# production mode
-$ pnpm run start:prod
-```
+   ```bash
+   git clone https://github.com/darka1pha/rentify.git
+   cd rentify
+   ```
 
-## Run tests
+2. Install dependencies:
 
-```bash
-# unit tests
-$ pnpm run test
+   ```bash
+   npm install
+   ```
 
-# e2e tests
-$ pnpm run test:e2e
+3. Set up the environment variables:
+   Create a `.env` file in the root directory and add the following variables:
 
-# test coverage
-$ pnpm run test:cov
-```
+   ```env
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_USER=your_database_user
+    DB_PASSWORD=your_database_password
+    DB_NAME=your_database_name
+    JWT_SECRET=your_jwt_secret
+   ```
 
-## Resources
+4. Run database sync:
 
-Check out a few resources that may come in handy when working with NestJS:
+   ```bash
+   npm run data:sync
+   ```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+5. Start the application:
 
-## Support
+   ```bash
+   npm run start:dev
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## API Endpoints
 
-## Stay in touch
+### Authentication
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- `POST /auth/signup`: Sign Up a new user.
+- `POST /auth/signin`: Sign In and get a JWT token.
+
+### Advertisements
+
+- `GET /advertisements`: Get a list of available advertisements.
+- `POST /advertisements`: Add a new advertisement (requires authentication).
+- `PUT /advertisements/:id`: Update an advertisement (requires authentication).
+- `DELETE /advertisements/:id`: Delete a property (requires authentication).
+
+### Facilities
+
+- `GET /facilities`: Get a list of available facilities.
+- `POST /facilities`: Add a new facilities (requires authentication).
+- `GET /advertisements/:id/facilities`: Retrieve advertisement facilities (requires authentication).
+
+### States
+
+- `GET /states`: Get a list of states.
+
+### Cities
+
+- `GET /cities`: Get a list of cities (pass the state parameter to filter by state).
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature/bug fix.
+3. Commit your changes.
+4. Open a pull request.
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the [MIT License](LICENSE).

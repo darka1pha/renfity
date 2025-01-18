@@ -6,10 +6,9 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 
 @Controller('advertisements')
-@UseGuards(AuthGuard())
 export class AdvertisementsController {
   constructor(private advertisementsService: AdvertisementsService) {}
-
+  @UseGuards(AuthGuard())
   @Post()
   createAdvertisement(
     @Body() body: CreateAdvertisementDto,

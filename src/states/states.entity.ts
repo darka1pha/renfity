@@ -1,5 +1,5 @@
 import { Advertisement } from 'src/advertisements/entities';
-import { City } from 'src/city/cities.entity';
+import { City } from 'src/cities/cities.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

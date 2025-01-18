@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { State } from 'src/states/states.entity';
-import { City } from 'src/city/cities.entity';
+import { City } from 'src/cities/cities.entity';
 
 const seedStatesAndCities = async (dataSource: DataSource) => {
   const stateRepository = dataSource.getRepository(State);

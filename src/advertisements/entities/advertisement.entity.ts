@@ -8,7 +8,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { State } from 'src/states/states.entity';
-import { City } from 'src/city/cities.entity';
+import { City } from 'src/cities/cities.entity';
 import { User } from 'src/auth/user.entity';
 import { Facility } from './facility.entity';
 import { PropertyType, TransactionType } from '../enum';

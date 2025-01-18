@@ -12,7 +12,7 @@ import {
 import { PropertyType } from '../enum/property-type.enum';
 import { TransactionType } from '../enum/transaction-type.enum';
 import { State } from 'src/states/states.entity';
-import { City } from 'src/city/cities.entity';
+import { City } from 'src/cities/cities.entity';
 
 export class CreateAdvertisementDto {
   @IsDateString()

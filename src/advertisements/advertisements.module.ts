@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { AdvertisementsRepository } from './repositories/advertisements.repository';
 import { DataSource } from 'typeorm';
-import { CitiesModule } from 'src/city/cities.module';
+import { CitiesModule } from 'src/cities/cities.module';
 import { StatesModule } from 'src/states/states.module';
 import { Advertisement } from './entities';
 import { Facility } from './entities/facility.entity';
