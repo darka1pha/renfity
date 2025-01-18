@@ -71,6 +71,9 @@ export class Property {
   @Column({ type: 'text' })
   description: string;
 
+  @Column({ type: 'int', default: 0 })
+  views: number;
+
   @ManyToOne(() => State, (state) => state.properties)
   @JoinColumn({ name: 'stateId' })
   state: State;
