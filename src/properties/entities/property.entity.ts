@@ -14,7 +14,7 @@ import { Facility } from './facility.entity';
 import { PropertyType, TransactionType } from '../enum';
 @Entity()
 export class Property {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment')
   id: string;
 
   @Column({ type: 'date' })

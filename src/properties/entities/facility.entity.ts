@@ -3,7 +3,7 @@ import { Property } from './property.entity';
 
 @Entity()
 export class Facility {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment')
   id: string;
 
   @Column()
