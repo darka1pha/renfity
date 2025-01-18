@@ -13,7 +13,7 @@ import { User } from 'src/auth/user.entity';
 import { Facility } from './facility.entity';
 import { PropertyType, TransactionType } from '../enum';
 @Entity()
-export class Advertisement {
+export class Property {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -71,22 +71,22 @@ export class Advertisement {
   @Column({ type: 'text' })
   description: string;
 
-  @ManyToOne(() => State, (state) => state.advertisements)
+  @ManyToOne(() => State, (state) => state.properties)
   @JoinColumn({ name: 'stateId' })
   state: State;
 
-  @ManyToOne(() => City, (city) => city.advertisements)
+  @ManyToOne(() => City, (city) => city.properties)
   @JoinColumn({ name: 'cityId' })
   city: City;
 
-  @ManyToOne(() => User, (user) => user.advertisements)
+  @ManyToOne(() => User, (user) => user.properties)
   @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @ManyToMany(() => Facility, (facility) => facility.advertisements, {
+  @ManyToMany(() => Facility, (facility) => facility.properties, {
     cascade: true,
   })
   @JoinTable()
@@ -95,5 +95,5 @@ export class Advertisement {
 
 // Relationships
 
-// @OneToMany(() => Media, (media) => media.advertisement)
+// @OneToMany(() => Media, (media) => media.property)
 // media: Media[];

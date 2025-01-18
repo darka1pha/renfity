@@ -18,7 +18,7 @@ export class FacilitiesService {
     return await this.facilitiesRepository.getFacilities();
   }
 
-  async getAdvertisementFacilities(id: string) {
-    return await this.facilitiesRepository.getAdvertisementFacilities(id);
+  async getPropertyFacilities(id: string) {
+    return await this.facilitiesRepository.getPropertyFacilities(id);
   }
 }

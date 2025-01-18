@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserType } from './user.type.enum';
-import { Advertisement } from 'src/advertisements/entities';
+import { Property } from 'src/properties/entities';
 
 @Entity()
 export class User {
@@ -34,8 +34,8 @@ export class User {
   @Column()
   type: UserType;
 
-  @OneToMany(() => Advertisement, (advertisement) => advertisement.user, {
+  @OneToMany(() => Property, (property) => property.user, {
     eager: true,
   })
-  advertisements: Advertisement[];
+  properties: Property[];
 }

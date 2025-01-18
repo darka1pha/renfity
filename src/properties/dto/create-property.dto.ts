@@ -14,7 +14,7 @@ import { TransactionType } from '../enum/transaction-type.enum';
 import { State } from 'src/states/states.entity';
 import { City } from 'src/cities/cities.entity';
 
-export class CreateAdvertisementDto {
+export class CreatePropertyDto {
   @IsDateString()
   @IsNotEmpty()
   builtYear: string;

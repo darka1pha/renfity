@@ -5,12 +5,12 @@ This repository contains the source code for **Rentify**, a **House Rent Website
 ## Features
 
 - **Authentication**: User registration and login with secure JWT-based authentication.
-- **Advertisement Management**:
-  - List advertisements for rent.
-  - Update or delete advertisement listings.
-- **Search and Filter**: Search advertisement by location, price range, and other filters.
-- **Booking System**: Renters can book advertisement directly through the platform.
-- **Admin Panel**: Manage users and advertisement listings.
+- **Property Management**:
+  - List properties for rent.
+  - Update or delete property listings.
+- **Search and Filter**: Search property by location, price range, and other filters.
+- **Booking System**: Renters can book property directly through the platform.
+- **Admin Panel**: Manage users and property listings.
 
 ## Technologies Used
 
@@ -70,18 +70,18 @@ This repository contains the source code for **Rentify**, a **House Rent Website
 - `POST /auth/signup`: Sign Up a new user.
 - `POST /auth/signin`: Sign In and get a JWT token.
 
-### Advertisements
+### Properties
 
-- `GET /advertisements`: Get a list of available advertisements.
-- `POST /advertisements`: Add a new advertisement (requires authentication).
-- `PUT /advertisements/:id`: Update an advertisement (requires authentication).
-- `DELETE /advertisements/:id`: Delete a property (requires authentication).
+- `GET /properties`: Get a list of available properties.
+- `POST /properties`: Add a new property (requires authentication).
+- `PUT /properties/:id`: Update an property (requires authentication).
+- `DELETE /properties/:id`: Delete a property (requires authentication).
 
 ### Facilities
 
 - `GET /facilities`: Get a list of available facilities.
 - `POST /facilities`: Add a new facilities (requires authentication).
-- `GET /advertisements/:id/facilities`: Retrieve advertisement facilities (requires authentication).
+- `GET /properties/:id/facilities`: Retrieve property facilities (requires authentication).
 
 ### States
 

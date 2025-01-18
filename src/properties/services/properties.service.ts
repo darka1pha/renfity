@@ -1,25 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AdvertisementsRepository } from '../repositories/advertisements.repository';
-import { CreateAdvertisementDto } from '../dto/create-advertisement.dto';
+import { PropertiesRepository } from '../repositories/properties.repository';
+import { CreatePropertyDto } from '../dto/create-property.dto';
 import { CitiesService } from 'src/cities/cities.service';
 import { StateService } from 'src/states/states.service';
 import { User } from 'src/auth/user.entity';
 
 @Injectable()
-export class AdvertisementsService {
+export class PropertiesService {
   constructor(
-    @InjectRepository(AdvertisementsRepository)
-    private advertisementsRepository: AdvertisementsRepository,
+    @InjectRepository(PropertiesRepository)
+    private propertiesRepository: PropertiesRepository,
     private readonly citiesService: CitiesService,
     private readonly stateService: StateService,
   ) {}
 
-  async getAdvertisements() {
-    return await this.advertisementsRepository.getAdvertisements();
+  async getProperties() {
+    return await this.propertiesRepository.getProperties();
   }
 
-  async createAdvertisement(body: CreateAdvertisementDto, user: User) {
+  async createProperty(body: CreatePropertyDto, user: User) {
     const { cityId, stateId, ...rest } = body;
 
     const city = await this.citiesService.getCityById(cityId);
@@ -28,7 +28,7 @@ export class AdvertisementsService {
 
     // const facilities =
 
-    return await this.advertisementsRepository.createAdvertisement(
+    return await this.propertiesRepository.createProperty(
       {
         ...rest,
         city,

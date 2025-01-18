@@ -1,4 +1,4 @@
-import { Advertisement } from 'src/advertisements/entities';
+import { Property } from 'src/properties/entities';
 import { State } from 'src/states/states.entity';
 import {
   Column,
@@ -25,8 +25,8 @@ export class City {
   @ManyToOne(() => State, (state) => state.id)
   state: State;
 
-  @OneToMany(() => Advertisement, (advertisement) => advertisement.city, {
+  @OneToMany(() => Property, (property) => property.city, {
     cascade: true,
   })
-  advertisements: Advertisement[];
+  properties: Property[];
 }

@@ -1,32 +1,32 @@
 import { Module } from '@nestjs/common';
-import { AdvertisementsService } from './services/advertisements.service';
-import { AdvertisementsController } from './controllers/advertisements.controller';
+import { PropertiesController } from './controllers/properties.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
-import { AdvertisementsRepository } from './repositories/advertisements.repository';
+import { PropertiesRepository } from './repositories/properties.repository';
 import { DataSource } from 'typeorm';
 import { CitiesModule } from 'src/cities/cities.module';
 import { StatesModule } from 'src/states/states.module';
-import { Advertisement } from './entities';
+import { Property } from './entities';
 import { Facility } from './entities/facility.entity';
 import { FacilitiesService } from './services/facilities.service';
 import { FacilitiesController } from './controllers/facilities.controller';
 import { FacilitiesRepository } from './repositories/facilities.repository';
+import { PropertiesService } from './services/properties.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Advertisement, Facility]),
+    TypeOrmModule.forFeature([Property, Facility]),
     AuthModule,
     CitiesModule,
     StatesModule,
   ],
   providers: [
-    AdvertisementsService,
+    PropertiesService,
     FacilitiesService,
     {
-      provide: AdvertisementsRepository,
+      provide: PropertiesRepository,
       useFactory: (dataSource: DataSource) =>
-        new AdvertisementsRepository(dataSource),
+        new PropertiesRepository(dataSource),
       inject: [DataSource],
     },
     {
@@ -36,7 +36,7 @@ import { FacilitiesRepository } from './repositories/facilities.repository';
       inject: [DataSource],
     },
   ],
-  controllers: [AdvertisementsController, FacilitiesController],
+  controllers: [PropertiesController, FacilitiesController],
   exports: [TypeOrmModule],
 })
-export class AdvertisementsModule {}
+export class PropertiesModule {}

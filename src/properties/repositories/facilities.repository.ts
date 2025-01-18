@@ -20,7 +20,7 @@ export class FacilitiesRepository extends Repository<Facility> {
     return await this.findOne({ where: { id } });
   }
 
-  async getAdvertisementFacilities(id: string) {
-    return await this.find({ where: { advertisements: { id } } });
+  async getPropertyFacilities(id: string) {
+    return await this.find({ where: { properties: { id } } });
   }
 }

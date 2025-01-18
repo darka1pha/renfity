@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdvertisementsModule } from './advertisements/advertisements.module';
+import { PropertiesModule } from './properties/properties.module';
 import { AuthModule } from './auth/auth.module';
 import { CitiesModule } from './cities/cities.module';
 import { StatesModule } from './states/states.module';
@@ -21,7 +21,7 @@ import { ConfigModule } from '@nestjs/config';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    AdvertisementsModule,
+    PropertiesModule,
     AuthModule,
     CitiesModule,
     StatesModule,

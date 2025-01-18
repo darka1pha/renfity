@@ -20,8 +20,8 @@ export class FacilitiesController {
     return this.facilitiesService.createFacility(body);
   }
 
-  @Get('advertisements/:id/facilities')
-  getAdvertisementFacilities(@Param('id') id: string) {
-    return this.facilitiesService.getAdvertisementFacilities(id);
+  @Get('properties/:id/facilities')
+  getPropertyFacilities(@Param('id') id: string) {
+    return this.facilitiesService.getPropertyFacilities(id);
   }
 }

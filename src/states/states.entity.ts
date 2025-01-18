@@ -1,4 +1,4 @@
-import { Advertisement } from 'src/advertisements/entities';
+import { Property } from 'src/properties/entities';
 import { City } from 'src/cities/cities.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -19,8 +19,8 @@ export class State {
   @OneToMany(() => City, (city) => city.state)
   cities: City[];
 
-  @OneToMany(() => Advertisement, (advertisement) => advertisement.state, {
+  @OneToMany(() => Property, (property) => property.state, {
     cascade: true,
   })
-  advertisements: Advertisement[];
+  properties: Property[];
 }
