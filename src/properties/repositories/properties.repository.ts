@@ -24,7 +24,7 @@ export class PropertiesRepository extends Repository<Property> {
     return property;
   }
 
-  async getProperties() {
+  async getProperties(user: User) {
     const query = this.createQueryBuilder('property')
       .leftJoinAndSelect('property.state', 'state')
       .leftJoinAndSelect('property.city', 'city')
@@ -34,7 +34,23 @@ export class PropertiesRepository extends Repository<Property> {
     return await query.getMany();
   }
 
-  async getPropertiesById() {}
+  async getPropertiesById(id: number, user: User) {
+    const query = this.createQueryBuilder('property')
+      .leftJoinAndSelect('property.state', 'state')
+      .leftJoinAndSelect('property.city', 'city')
+      .leftJoinAndSelect('property.user', 'user')
+      .leftJoinAndSelect('property.facilities', 'facilities')
+      .where('property.id = :id', { id });
+
+    // Increment the views count
+    await this.createQueryBuilder()
+      .update('property')
+      .set({ views: () => 'views + 1' })
+      .where('id = :id', { id })
+      .execute();
+
+    return await query.getOne();
+  }
 
   async updateProperties() {}
 

@@ -15,8 +15,8 @@ export class PropertiesService {
     private readonly stateService: StateService,
   ) {}
 
-  async getProperties() {
-    return await this.propertiesRepository.getProperties();
+  async getProperties(user: User) {
+    return await this.propertiesRepository.getProperties(user);
   }
 
   async createProperty(body: CreatePropertyDto, user: User) {
@@ -26,8 +26,6 @@ export class PropertiesService {
 
     const state = await this.stateService.getStateById(stateId);
 
-    // const facilities =
-
     return await this.propertiesRepository.createProperty(
       {
         ...rest,
@@ -36,5 +34,9 @@ export class PropertiesService {
       },
       user,
     );
+  }
+
+  async getPropertyById(id: number, user: User) {
+    return await this.propertiesRepository.getPropertiesById(id, user);
   }
 }
