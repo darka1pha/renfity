@@ -77,6 +77,11 @@ This repository contains the source code for **Rentify**, a **House Rent Website
 - `PUT /properties/:id`: Update an property (requires authentication).
 - `DELETE /properties/:id`: Delete a property (requires authentication).
 
+### Appointments
+
+- `POST /appointments`: Create new appointment.
+- `GET /appointments`: Get User appointments (requires authentication).
+
 ### Facilities
 
 - `GET /facilities`: Get a list of available facilities.
