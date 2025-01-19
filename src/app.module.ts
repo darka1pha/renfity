@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { CitiesModule } from './cities/cities.module';
 import { StatesModule } from './states/states.module';
 import { ConfigModule } from '@nestjs/config';
+import { AppointmentsModule } from './appointments/appointments.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     CitiesModule,
     StatesModule,
+    AppointmentsModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
