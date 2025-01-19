@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FacilitiesService } from '../services/facilities.service';
 import { CreateFacilityDto } from '../dto/create-facility.dto';
-import { AdminGuard } from 'src/auth/admin.guard';
+import { AdminGuard } from 'src/auth/guards';
 
 @Controller()
 export class FacilitiesController {
@@ -14,8 +14,7 @@ export class FacilitiesController {
   }
 
   @Post('facilities')
-  @UseGuards(AuthGuard())
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard(), AdminGuard)
   createFacility(@Body() body: CreateFacilityDto) {
     return this.facilitiesService.createFacility(body);
   }
