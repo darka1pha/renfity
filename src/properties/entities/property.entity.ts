@@ -6,15 +6,18 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { State } from 'src/states/states.entity';
 import { City } from 'src/cities/cities.entity';
 import { User } from 'src/auth/user.entity';
 import { Facility } from './facility.entity';
 import { PropertyType, TransactionType } from '../enum';
+import { Appointment } from 'src/appointments/appointment.entity';
+import { Media } from 'src/media/media.entity';
 @Entity()
 export class Property {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'date' })
@@ -96,7 +99,14 @@ export class Property {
   facilities: Facility[];
 
   @ManyToMany(() => User, (user) => user.likedProperties)
+  @JoinTable()
   likedBy: User[];
+
+  @OneToMany(() => Appointment, (request) => request.property)
+  appointmentRequests: Appointment[];
+
+  @OneToMany(() => Media, (media) => media.property)
+  media: Media[];
 }
 
 // Relationships
