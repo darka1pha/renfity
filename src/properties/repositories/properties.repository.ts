@@ -31,7 +31,7 @@ export class PropertiesRepository extends Repository<Property> {
       .leftJoinAndSelect('property.city', 'city')
       .leftJoinAndSelect('property.user', 'user')
       .leftJoinAndSelect('property.facilities', 'facilities')
-      .leftJoinAndSelect('property.likedBy', 'likedBy'); // Join the likedBy relation
+      .leftJoinAndSelect('property.likedBy', 'likedBy');
 
     const properties = await query.getMany();
 
@@ -42,13 +42,13 @@ export class PropertiesRepository extends Repository<Property> {
     }));
   }
 
-  async getPropertiesById(id: number, user: User) {
+  async getPropertiesById(id: string, user: User) {
     const query = this.createQueryBuilder('property')
       .leftJoinAndSelect('property.state', 'state')
       .leftJoinAndSelect('property.city', 'city')
       .leftJoinAndSelect('property.user', 'user')
       .leftJoinAndSelect('property.facilities', 'facilities')
-      .leftJoinAndSelect('property.likedBy', 'likedBy') // Join likedBy relation
+      .leftJoinAndSelect('property.likedBy', 'likedBy')
       .where('property.id = :id', { id });
 
     // Increment the views count
@@ -73,5 +73,16 @@ export class PropertiesRepository extends Repository<Property> {
 
   async updateProperties() {}
 
-  async deleteProperties() {}
+  async deleteProperty(id: string) {
+    const result = await this.createQueryBuilder('property')
+      .delete()
+      .where('id = :id', { id })
+      .execute();
+
+    if (result.affected === 0) {
+      throw new NotFoundException('Property not found');
+    }
+
+    return { message: 'Property deleted successfully' };
+  }
 }

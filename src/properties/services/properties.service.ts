@@ -36,7 +36,11 @@ export class PropertiesService {
     );
   }
 
-  async getPropertyById(id: number, user: User) {
+  async deleteProperty(id: string) {
+    return await this.propertiesRepository.deleteProperty(id);
+  }
+
+  async getPropertyById(id: string, user: User) {
     return await this.propertiesRepository.getPropertiesById(id, user);
   }
 }
