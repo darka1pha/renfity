@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { UserType } from './user.type.enum';
 import { Property } from 'src/properties/entities';
+import { Appointment } from 'src/appointments/appointment.entity';
 
 @Entity()
 export class User {
@@ -47,4 +48,7 @@ export class User {
 
   @ManyToMany(() => Property, (property) => property.likedBy)
   likedProperties: Property[];
+
+  @OneToMany(() => Appointment, (request) => request.property)
+  appointmentRequests: Appointment[];
 }
