@@ -4,15 +4,14 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { User } from './user.entity'; // Adjust the import path based on your project structure
-import { UserType } from './user.type.enum';
+import { User } from '../user.entity'; // Adjust the import path based on your project structure
+import { UserType } from '../user.type.enum';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const user: User = request.user;
-
     if (!user || user.type !== UserType.ADMIN) {
       throw new ForbiddenException('Access restricted to administrators only');
     }
