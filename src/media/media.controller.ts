@@ -1,0 +1,12 @@
+import { Controller, Param, Post } from '@nestjs/common';
+import { MediaService } from './media.service';
+
+@Controller('media')
+export class MediaController {
+  constructor(private mediaService: MediaService) {}
+
+  @Post('upload/:itemId')
+  async uploadMedia(@Param('itemId') propertyId: string) {
+    console.log({ propertyId });
+  }
+}
