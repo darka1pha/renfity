@@ -1,4 +1,4 @@
-import { Controller, Param, Post } from '@nestjs/common';
+import { Controller, Param, Post, UseInterceptors } from '@nestjs/common';
 import { MediaService } from './media.service';
 
 @Controller('media')
