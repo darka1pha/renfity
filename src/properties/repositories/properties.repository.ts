@@ -27,12 +27,17 @@ export class PropertiesRepository extends Repository<Property> {
 
   async getProperties(user: User) {
     const query = this.createQueryBuilder('property')
-      .leftJoinAndSelect('property.state', 'state')
-      .leftJoinAndSelect('property.city', 'city')
-      .leftJoinAndSelect('property.user', 'user')
+      .leftJoin('property.state', 'state')
+      .select(['property', 'state.name'])
+      .leftJoin('property.city', 'city')
+      .select(['property', 'city.name'])
+      .leftJoin('property.user', 'user')
+      .select(['property', 'user.name', 'user.lastname', 'user.id'])
       .leftJoinAndSelect('property.facilities', 'facilities')
-      .leftJoinAndSelect('property.likedBy', 'likedBy');
-
+      .leftJoin('property.likedBy', 'likedBy')
+      .select(['property', 'likedBy.id'])
+      .leftJoin('property.media', 'media')
+      .select(['property', 'media.fileUrl']);
     const properties = await query.getMany();
 
     // Add isLiked field dynamically
@@ -49,6 +54,7 @@ export class PropertiesRepository extends Repository<Property> {
       .leftJoinAndSelect('property.user', 'user')
       .leftJoinAndSelect('property.facilities', 'facilities')
       .leftJoinAndSelect('property.likedBy', 'likedBy')
+      .leftJoinAndSelect('property.media', 'media')
       .where('property.id = :id', { id });
 
     // Increment the views count
