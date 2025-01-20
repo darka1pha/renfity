@@ -6,6 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { EntityType } from './entity.type.enum';
 
 @Entity()
 export class Media {
@@ -26,8 +27,8 @@ export class Media {
   entityId: string;
 
   // Polymorphic relation: stores the type of entity (e.g., Property, BlogPost)
-  @Column({ type: 'varchar', nullable: true })
-  entityType: string;
+  @Column({ type: 'enum', enum: EntityType })
+  entityType: EntityType;
 
   // Relationship to Property
   @ManyToOne(() => Property, (property) => property.media, {

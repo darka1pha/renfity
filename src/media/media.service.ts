@@ -9,7 +9,7 @@ export class MediaService {
     private mediaRepository: MediaRepository,
   ) {}
 
-  async addPropertyMedia(id: string) {
-    return await this.mediaRepository.addPropertyMedia(id);
+  async uploadMedia(id: string, file: Express.Multer.File[]) {
+    return await this.mediaRepository.uploadMedia(id, file);
   }
 }
