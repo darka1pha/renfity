@@ -8,7 +8,6 @@ const swaggerDocument = new DocumentBuilder()
   .setTitle('API')
   .setDescription('API')
   .setVersion('1.0')
-  .addTag('API')
   .build();
 
 async function bootstrap() {
@@ -24,6 +23,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3001);
 
-  console.log(`APP IS RUNNING ON PORT ${await app.getUrl()}`);
+  console.log(`APP IS RUNNING ON PORT ${await app.getUrl()}/api`);
 }
 bootstrap();

@@ -5,13 +5,14 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { CreatePropertyDto } from '../dto/create-property.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { PropertiesService } from '../services/properties.service';
+import { CreatePropertyDto, GetPropertiesFilterDto } from '../dto';
 
 @Controller('properties')
 export class PropertiesController {
@@ -29,8 +30,11 @@ export class PropertiesController {
   }
 
   @Get()
-  getProperties(@GetUser() user: User) {
-    return this.propertiesService.getProperties(user);
+  getProperties(
+    @GetUser() user: User,
+    @Query() filterDto: GetPropertiesFilterDto,
+  ) {
+    return this.propertiesService.getProperties(user, filterDto);
   }
 
   @Get(':id')
