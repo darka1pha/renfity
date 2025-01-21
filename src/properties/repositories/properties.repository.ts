@@ -1,9 +1,11 @@
-import { DataSource, In, Not, Repository } from 'typeorm';
+import { DataSource, In, Not, Repository, SelectQueryBuilder } from 'typeorm';
 import { CreatePropertyDto } from '../dto/create-property.dto';
 import { User } from 'src/auth/user.entity';
 import { Property } from '../entities';
 import { Facility } from '../entities/facility.entity';
 import { NotFoundException } from '@nestjs/common';
+import { GetPropertiesFilterDto } from '../dto';
+import { SortType } from '../enum';
 
 export class PropertiesRepository extends Repository<Property> {
   constructor(dataSource: DataSource) {
@@ -25,19 +27,69 @@ export class PropertiesRepository extends Repository<Property> {
     return property;
   }
 
-  async getProperties(user: User) {
+  private applyFilters(
+    query: SelectQueryBuilder<Property>,
+    filterDto: GetPropertiesFilterDto,
+  ) {
+    const { city, state, propertyType, search } = filterDto;
+
+    if (city) {
+      query.andWhere('city.id = :city', { city });
+    }
+
+    if (state) {
+      query.andWhere('state.id = :state', { state });
+    }
+
+    if (propertyType) {
+      query.andWhere('property.propertyType = :propertyType', { propertyType });
+    }
+
+    if (search) {
+      query.andWhere(
+        '(property.name LIKE :search OR property.description LIKE :search OR property.address LIKE :search OR city.name LIKE :search OR state.name LIKE :search)',
+        { search: `%${search}%` },
+      );
+    }
+  }
+
+  private applySorting(query: SelectQueryBuilder<Property>, sort?: SortType) {
+    switch (sort) {
+      case SortType.NEWEST:
+        query.orderBy('property.createdAt', 'DESC');
+        break;
+      case SortType.OLDEST:
+        query.orderBy('property.createdAt', 'ASC');
+        break;
+      case SortType.PRICE_ASC:
+        query.orderBy('property.price', 'ASC');
+        break;
+      case SortType.PRICE_DESC:
+        query.orderBy('property.price', 'DESC');
+        break;
+      default:
+        query.orderBy('property.createdAt', 'DESC'); // Default to newest
+    }
+  }
+
+  async getProperties(user: User, filterDto: GetPropertiesFilterDto) {
     const query = this.createQueryBuilder('property')
       .leftJoin('property.state', 'state')
-      .select(['property', 'state.name'])
+      .addSelect(['property', 'state.name'])
       .leftJoin('property.city', 'city')
-      .select(['property', 'city.name'])
+      .addSelect(['property', 'city.name'])
       .leftJoin('property.user', 'user')
-      .select(['property', 'user.name', 'user.lastname', 'user.id'])
+      .addSelect(['property', 'user.name', 'user.lastname', 'user.id'])
       .leftJoinAndSelect('property.facilities', 'facilities')
       .leftJoin('property.likedBy', 'likedBy')
-      .select(['property', 'likedBy.id'])
+      .addSelect(['property', 'likedBy.id'])
       .leftJoin('property.media', 'media')
-      .select(['property', 'media.fileUrl']);
+      .addSelect(['media.fileUrl']);
+
+    // Apply filters
+    this.applyFilters(query, filterDto);
+    this.applySorting(query, filterDto.sort);
+
     const properties = await query.getMany();
 
     // Add isLiked field dynamically

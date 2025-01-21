@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PropertiesRepository } from '../repositories/properties.repository';
-import { CreatePropertyDto } from '../dto/create-property.dto';
 import { CitiesService } from 'src/cities/cities.service';
 import { StateService } from 'src/states/states.service';
 import { User } from 'src/auth/user.entity';
+import { GetPropertiesFilterDto, CreatePropertyDto } from '../dto';
 
 @Injectable()
 export class PropertiesService {
@@ -15,8 +15,8 @@ export class PropertiesService {
     private readonly stateService: StateService,
   ) {}
 
-  async getProperties(user: User) {
-    return await this.propertiesRepository.getProperties(user);
+  async getProperties(user: User, filterDto: GetPropertiesFilterDto) {
+    return await this.propertiesRepository.getProperties(user, filterDto);
   }
 
   async createProperty(body: CreatePropertyDto, user: User) {
