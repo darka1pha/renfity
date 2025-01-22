@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PropertiesRepository } from '../repositories/properties.repository';
 import { CitiesService } from 'src/cities/cities.service';
 import { StateService } from 'src/states/states.service';
-import { User } from 'src/auth/user.entity';
 import { GetPropertiesFilterDto, CreatePropertyDto } from '../dto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class PropertiesService {
