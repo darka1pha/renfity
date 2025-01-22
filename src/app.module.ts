@@ -9,6 +9,7 @@ import { StatesModule } from './states/states.module';
 import { ConfigModule } from '@nestjs/config';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { MediaModule } from './media/media.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { MediaModule } from './media/media.module';
     StatesModule,
     AppointmentsModule,
     MediaModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
