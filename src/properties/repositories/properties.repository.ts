@@ -1,11 +1,11 @@
-import { DataSource, In, Not, Repository, SelectQueryBuilder } from 'typeorm';
+import { DataSource, In, Repository, SelectQueryBuilder } from 'typeorm';
 import { CreatePropertyDto } from '../dto/create-property.dto';
-import { User } from 'src/auth/user.entity';
 import { Property } from '../entities';
 import { Facility } from '../entities/facility.entity';
 import { NotFoundException } from '@nestjs/common';
 import { GetPropertiesFilterDto } from '../dto';
 import { SortType } from '../enum';
+import { User } from 'src/user/user.entity';
 
 export class PropertiesRepository extends Repository<Property> {
   constructor(dataSource: DataSource) {
@@ -101,12 +101,17 @@ export class PropertiesRepository extends Repository<Property> {
 
   async getPropertiesById(id: string, user: User) {
     const query = this.createQueryBuilder('property')
-      .leftJoinAndSelect('property.state', 'state')
-      .leftJoinAndSelect('property.city', 'city')
-      .leftJoinAndSelect('property.user', 'user')
+      .leftJoin('property.state', 'state')
+      .addSelect(['property', 'state.name'])
+      .leftJoin('property.city', 'city')
+      .addSelect(['property', 'city.name'])
+      .leftJoin('property.user', 'user')
+      .addSelect(['property', 'user.name', 'user.lastname', 'user.id'])
       .leftJoinAndSelect('property.facilities', 'facilities')
-      .leftJoinAndSelect('property.likedBy', 'likedBy')
-      .leftJoinAndSelect('property.media', 'media')
+      .leftJoin('property.likedBy', 'likedBy')
+      .addSelect(['property', 'likedBy.id'])
+      .leftJoin('property.media', 'media')
+      .addSelect(['media.fileUrl'])
       .where('property.id = :id', { id });
 
     // Increment the views count
@@ -125,7 +130,9 @@ export class PropertiesRepository extends Repository<Property> {
     // Add the isLiked field dynamically
     return {
       ...property,
-      isLiked: property.likedBy.some((likedUser) => likedUser.id === user.id),
+      isLiked: !!user
+        ? property.likedBy.some((likedUser) => likedUser.id === user.id)
+        : null,
     };
   }
 
@@ -145,23 +152,35 @@ export class PropertiesRepository extends Repository<Property> {
   }
 
   async toggleFavorite(id: string, user: User) {
-    const property = await this.findOne({ where: { id } });
+    const property = await this.findOne({
+      where: { id },
+      relations: ['likedBy'], // Ensure we load the relation
+    });
+
     if (!property) {
       throw new NotFoundException('Property not found');
     }
 
-    if (property.likedBy.some((likedUser) => likedUser.id === user.id)) {
-      property.likedBy = property.likedBy.filter((likedUser) => {
-        return likedUser.id !== user.id;
-      });
+    // Check if the user has already liked the property
+    const alreadyLiked = property.likedBy.some(
+      (likedUser) => likedUser.id === user.id,
+    );
+
+    if (alreadyLiked) {
+      // Remove user from likedBy relation
+      property.likedBy = property.likedBy.filter(
+        (likedUser) => likedUser.id !== user.id,
+      );
     } else {
+      // Add user to likedBy relation
       property.likedBy.push(user);
     }
 
+    // Save the updated property
     await this.save(property);
 
     return {
-      message: 'Favorite status updated successfully',
+      message: `Property has been ${alreadyLiked ? 'removed from' : 'added to'} favorites`,
     };
   }
 }
