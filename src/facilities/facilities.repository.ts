@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
-import { Facility } from '../entities/facility.entity';
-import { CreateFacilityDto } from '../dto/create-facility.dto';
+import { CreateFacilityDto } from './dto/create-facility.dto';
+import { Facility } from './facility.entity';
 
 export class FacilitiesRepository extends Repository<Facility> {
   constructor(dataSource: DataSource) {

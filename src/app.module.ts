@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { MediaModule } from './media/media.module';
 import { UserModule } from './user/user.module';
+import { FacilitiesModule } from './facilities/facilities.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
     }),
     PropertiesModule,
+    FacilitiesModule,
     AuthModule,
     CitiesModule,
     StatesModule,
