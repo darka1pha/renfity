@@ -10,8 +10,8 @@ export class CitiesController {
     return this.citiesService.getAll();
   }
 
-  @Get(':id')
-  getStateCities(@Param('id') id: number) {
-    return this.citiesService.getStateCities(id);
+  @Get(':stateId')
+  getStateCities(@Param('stateId') stateId: number) {
+    return this.citiesService.getStateCities(stateId);
   }
 }
