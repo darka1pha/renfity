@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { State } from 'src/states/states.entity';
 import { City } from 'src/cities/cities.entity';
-import { PropertyType, Status, TransactionType } from '../enum';
+import { PropertyType, PropertyStatus, TransactionType } from '../enum';
 import { Appointment } from 'src/appointments/appointment.entity';
 import { Media } from 'src/media/media.entity';
 import { User } from 'src/user/user.entity';
@@ -29,8 +29,12 @@ export class Property {
   @Column({ type: 'enum', enum: TransactionType })
   transactionType: TransactionType;
 
-  @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
-  status: Status;
+  @Column({
+    type: 'enum',
+    enum: PropertyStatus,
+    default: PropertyStatus.PENDING,
+  })
+  status: PropertyStatus;
 
   @Column({ type: 'int' })
   bathroomCount: number;
