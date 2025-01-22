@@ -22,4 +22,11 @@ export class UserController {
   getAppointments(@GetUser() user: User) {
     return this.userService.getAppointments(user);
   }
+
+  @Get('properties')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  getProperties(@GetUser() user: User) {
+    return this.userService.getProperties(user);
+  }
 }

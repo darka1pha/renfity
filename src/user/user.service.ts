@@ -16,4 +16,8 @@ export class UserService {
   async getAppointments(user: User) {
     return await this.userRepository.getUserAppointments(user);
   }
+
+  async getProperties(user: User) {
+    return await this.userRepository.getProperties(user);
+  }
 }
