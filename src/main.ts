@@ -8,6 +8,7 @@ const swaggerDocument = new DocumentBuilder()
   .setTitle('API')
   .setDescription('API')
   .setVersion('1.0')
+  .addBearerAuth()
   .build();
 
 async function bootstrap() {
@@ -19,6 +20,11 @@ async function bootstrap() {
     'api',
     app,
     SwaggerModule.createDocument(app, swaggerDocument),
+    {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    },
   );
 
   await app.listen(process.env.PORT ?? 3001);
