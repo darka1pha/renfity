@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { User } from 'src/auth/user.entity';
 import { PropertiesService } from '../services/properties.service';
 import { CreatePropertyDto, GetPropertiesFilterDto } from '../dto';
+import { User } from 'src/user/user.entity';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('properties')
 export class PropertiesController {
@@ -44,6 +45,7 @@ export class PropertiesController {
 
   @UseGuards(AuthGuard())
   @Post(':id/favorites')
+  @ApiBearerAuth()
   async toggleFavorite(@Param('id') id: string, @GetUser() user: User) {
     return this.propertiesService.toggleFavorite(id, user);
   }
