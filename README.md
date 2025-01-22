@@ -2,16 +2,6 @@
 
 This repository contains the source code for **Rentify**, a **House Rent Website** built using **NestJS**, **PostgreSQL**, and **TypeORM**. The application provides a platform for property owners to list their properties for rent and for users to search and book available houses.
 
-## Features
-
-- **Authentication**: User registration and login with secure JWT-based authentication.
-- **Property Management**:
-  - List properties for rent.
-  - Update or delete property listings.
-- **Search and Filter**: Search property by location, price range, and other filters.
-- **Booking System**: Renters can book property directly through the platform.
-- **Admin Panel**: Manage users and property listings.
-
 ## Technologies Used
 
 - **Backend Framework**: [NestJS](https://nestjs.com/) - A progressive Node.js framework.
@@ -73,8 +63,18 @@ This repository contains the source code for **Rentify**, a **House Rent Website
 ### Properties
 
 - `GET /properties`: Get a list of available properties.
+- `GET /properties/:id`: Get property details.
 - `POST /properties`: Add a new property (requires authentication).
 - `PUT /properties/:id`: Update an property (requires authentication).
+- `DELETE /properties/:id`: Delete a property (requires authentication).
+- `POST /properties/:id/favorites`: Add property to favorite list of logged in user.
+- `PATCH /properties/:id/status`: Update property status (requires authentication).
+
+### User ( requires authentication)
+
+- `GET /user/properties`: Get a list of user ACTIVE properties.
+- `POST /user/appointments`: Get a list of user appointments.
+- `PUT /user/favorite-properties`: Get a list of user favorite properties.
 - `DELETE /properties/:id`: Delete a property (requires authentication).
 
 ### Appointments
@@ -86,7 +86,7 @@ This repository contains the source code for **Rentify**, a **House Rent Website
 
 - `GET /facilities`: Get a list of available facilities.
 - `POST /facilities`: Add a new facilities (requires authentication).
-- `GET /properties/:id/facilities`: Retrieve property facilities (requires authentication).
+- `GET /facilities/:propertyId`: Retrieve property facilities (requires authentication).
 
 ### States
 
