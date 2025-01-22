@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Res,
@@ -12,10 +13,15 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { PropertiesService } from './properties.service';
-import { CreatePropertyDto, GetPropertiesFilterDto } from './dto';
+import {
+  CreatePropertyDto,
+  GetPropertiesFilterDto,
+  UpdateStatusDto,
+} from './dto';
 import { User } from 'src/user/user.entity';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
+import { PropertyStatus } from './enum';
 
 @Controller('properties')
 export class PropertiesController {
@@ -62,8 +68,12 @@ export class PropertiesController {
   }
 
   @UseGuards(AuthGuard())
-  @Post(':id/status')
-  togglePropertyStatus(@Param('id') id: string, @GetUser() user: User) {
-    return this.propertiesService.togglePropertyStatus(id, user);
+  @Patch(':id/status')
+  updateStatus(
+    @Param('id') id: string,
+    @Body() dto: UpdateStatusDto,
+    @GetUser() user: User,
+  ) {
+    return this.propertiesService.upadteStatus(id, user, dto);
   }
 }

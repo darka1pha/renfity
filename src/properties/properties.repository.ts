@@ -6,8 +6,8 @@ import {
   HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
-import { GetPropertiesFilterDto } from './dto';
-import { SortType, Status } from './enum';
+import { GetPropertiesFilterDto, UpdateStatusDto } from './dto';
+import { SortType, PropertyStatus } from './enum';
 import { User } from 'src/user/user.entity';
 import { Facility } from 'src/facilities/facility.entity';
 import { City } from 'src/cities/cities.entity';
@@ -20,21 +20,27 @@ export class PropertiesRepository extends Repository<Property> {
     super(Property, dataSource.manager);
   }
 
-  async togglePropertyStatus(id: string, user: User) {
+  async upadteStatus(id: string, user: User, dto: UpdateStatusDto) {
     const property = await this.findOne({ where: { id } });
     if (!property) {
       throw new NotFoundException();
     }
 
     if (user.id === property.user.id || user.type === UserType.ADMIN) {
-      if (property.status === Status.ACTIVE) {
-        property.status = Status.INACTIVE;
-      } else {
-        property.status = Status.ACTIVE;
+      if (
+        dto.status === PropertyStatus.ACTIVE &&
+        user.type !== UserType.ADMIN
+      ) {
+        throw new ForbiddenException(
+          'You are not authorized to perform this action.',
+        );
       }
+
+      property.status = dto.status;
       await this.save(property);
+
       return {
-        message: `Property has been ${property.status === Status.ACTIVE ? 'activated' : 'deactivated'}`,
+        message: `Property has been ${property.status} successfully'}`,
       };
     }
 
@@ -123,7 +129,8 @@ export class PropertiesRepository extends Repository<Property> {
       .leftJoin('property.likedBy', 'likedBy')
       .addSelect(['property', 'likedBy.id'])
       .leftJoin('property.media', 'media')
-      .addSelect(['media.fileUrl']);
+      .addSelect(['media.fileUrl'])
+      .where({ status: PropertyStatus.ACTIVE });
 
     // Apply filters
     this.applyFilters(query, filterDto);

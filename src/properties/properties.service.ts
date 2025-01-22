@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PropertiesRepository } from './properties.repository';
-import { GetPropertiesFilterDto, CreatePropertyDto } from './dto';
+import {
+  GetPropertiesFilterDto,
+  CreatePropertyDto,
+  UpdateStatusDto,
+} from './dto';
 import { User } from 'src/user/user.entity';
 import { Response } from 'express';
 
@@ -20,8 +24,8 @@ export class PropertiesService {
     return await this.propertiesRepository.createProperty(body, user, res);
   }
 
-  async togglePropertyStatus(id: string, user: User) {
-    return await this.propertiesRepository.togglePropertyStatus(id, user);
+  async upadteStatus(id: string, user: User, dto: UpdateStatusDto) {
+    return await this.propertiesRepository.upadteStatus(id, user, dto);
   }
 
   async deleteProperty(id: string, user: User) {
