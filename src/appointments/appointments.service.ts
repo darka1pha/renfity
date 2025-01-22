@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { AppointmentsRepository } from './appointment.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/user.entity';
 import { CreateAppointmentDto } from './dto/create.appointment.dto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AppointmentsService {

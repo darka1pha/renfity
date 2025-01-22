@@ -4,8 +4,8 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { User } from '../user.entity'; // Adjust the import path based on your project structure
-import { UserType } from '../user.type.enum';
+import { UserType } from '../../user/enum/user.type.enum';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AdminGuard implements CanActivate {

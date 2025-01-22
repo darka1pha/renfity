@@ -10,11 +10,11 @@ import {
 } from 'typeorm';
 import { State } from 'src/states/states.entity';
 import { City } from 'src/cities/cities.entity';
-import { User } from 'src/auth/user.entity';
 import { Facility } from './facility.entity';
 import { PropertyType, TransactionType } from '../enum';
 import { Appointment } from 'src/appointments/appointment.entity';
 import { Media } from 'src/media/media.entity';
+import { User } from 'src/user/user.entity';
 @Entity()
 export class Property {
   @PrimaryGeneratedColumn('uuid')
@@ -108,8 +108,3 @@ export class Property {
   @OneToMany(() => Media, (media) => media.property)
   media: Media[];
 }
-
-// Relationships
-
-// @OneToMany(() => Media, (media) => media.property)
-// media: Media[];

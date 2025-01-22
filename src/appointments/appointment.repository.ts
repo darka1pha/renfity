@@ -1,10 +1,10 @@
 import { DataSource, Repository } from 'typeorm';
 import { Appointment } from './appointment.entity';
-import { User } from 'src/auth/user.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create.appointment.dto';
 import { Property } from 'src/properties/entities';
-import { UserType } from 'src/auth/user.type.enum';
+import { UserType } from 'src/user/enum/user.type.enum';
+import { User } from 'src/user/user.entity';
 
 export class AppointmentsRepository extends Repository<Appointment> {
   constructor(dataSource: DataSource) {
