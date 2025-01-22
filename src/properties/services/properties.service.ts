@@ -43,4 +43,8 @@ export class PropertiesService {
   async getPropertyById(id: string, user: User) {
     return await this.propertiesRepository.getPropertiesById(id, user);
   }
+
+  async toggleFavorite(id: string, user: User) {
+    return await this.propertiesRepository.toggleFavorite(id, user);
+  }
 }

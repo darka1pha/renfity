@@ -41,4 +41,10 @@ export class PropertiesController {
   getPropertyById(@Param('id') id: string, @GetUser() user: User) {
     return this.propertiesService.getPropertyById(id, user);
   }
+
+  @UseGuards(AuthGuard())
+  @Post(':id/favorites')
+  async toggleFavorite(@Param('id') id: string, @GetUser() user: User) {
+    return this.propertiesService.toggleFavorite(id, user);
+  }
 }

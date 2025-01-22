@@ -143,4 +143,25 @@ export class PropertiesRepository extends Repository<Property> {
 
     return { message: 'Property deleted successfully' };
   }
+
+  async toggleFavorite(id: string, user: User) {
+    const property = await this.findOne({ where: { id } });
+    if (!property) {
+      throw new NotFoundException('Property not found');
+    }
+
+    if (property.likedBy.some((likedUser) => likedUser.id === user.id)) {
+      property.likedBy = property.likedBy.filter((likedUser) => {
+        return likedUser.id !== user.id;
+      });
+    } else {
+      property.likedBy.push(user);
+    }
+
+    await this.save(property);
+
+    return {
+      message: 'Favorite status updated successfully',
+    };
+  }
 }
