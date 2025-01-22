@@ -10,11 +10,11 @@ import {
 } from 'typeorm';
 import { State } from 'src/states/states.entity';
 import { City } from 'src/cities/cities.entity';
-import { Facility } from './facility.entity';
 import { PropertyType, TransactionType } from '../enum';
 import { Appointment } from 'src/appointments/appointment.entity';
 import { Media } from 'src/media/media.entity';
 import { User } from 'src/user/user.entity';
+import { Facility } from 'src/facilities/facility.entity';
 @Entity()
 export class Property {
   @PrimaryGeneratedColumn('uuid')

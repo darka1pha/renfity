@@ -120,15 +120,6 @@ export class CreatePropertyDto {
   @ApiProperty({ example: 1 })
   cityId?: number;
 
-  // For Repository Layer
-  @ValidateIf((dto) => dto.stateId === undefined)
-  @IsOptional()
-  state?: State;
-
-  @ValidateIf((dto) => dto.cityId === undefined)
-  @IsOptional()
-  city?: City;
-
   @IsArray()
   @IsNotEmpty()
   @IsString({ each: true })
