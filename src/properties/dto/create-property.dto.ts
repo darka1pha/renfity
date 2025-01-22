@@ -7,12 +7,9 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateIf,
 } from 'class-validator';
 import { PropertyType } from '../enum/property-type.enum';
 import { TransactionType } from '../enum/transaction-type.enum';
-import { State } from 'src/states/states.entity';
-import { City } from 'src/cities/cities.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePropertyDto {
