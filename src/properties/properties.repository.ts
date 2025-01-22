@@ -1,20 +1,49 @@
 import { DataSource, In, Repository, SelectQueryBuilder } from 'typeorm';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { Property } from './entities';
-import { NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { GetPropertiesFilterDto } from './dto';
-import { SortType } from './enum';
+import { SortType, Status } from './enum';
 import { User } from 'src/user/user.entity';
 import { Facility } from 'src/facilities/facility.entity';
 import { City } from 'src/cities/cities.entity';
 import { State } from 'src/states/states.entity';
+import { UserType } from 'src/user/enum/user.type.enum';
+import { Response } from 'express';
 
 export class PropertiesRepository extends Repository<Property> {
   constructor(dataSource: DataSource) {
     super(Property, dataSource.manager);
   }
 
-  async createProperty(body: CreatePropertyDto, user: User) {
+  async togglePropertyStatus(id: string, user: User) {
+    const property = await this.findOne({ where: { id } });
+    if (!property) {
+      throw new NotFoundException();
+    }
+
+    if (user.id === property.user.id || user.type === UserType.ADMIN) {
+      if (property.status === Status.ACTIVE) {
+        property.status = Status.INACTIVE;
+      } else {
+        property.status = Status.ACTIVE;
+      }
+      await this.save(property);
+      return {
+        message: `Property has been ${property.status === Status.ACTIVE ? 'activated' : 'deactivated'}`,
+      };
+    }
+
+    throw new ForbiddenException(
+      'You are not authorized to perform this action.',
+    );
+  }
+
+  async createProperty(body: CreatePropertyDto, user: User, res: Response) {
     const { facilities, cityId, stateId, ...rest } = body;
 
     const city = await this.manager.findOne(City, { where: { id: cityId } });
@@ -32,7 +61,9 @@ export class PropertiesRepository extends Repository<Property> {
       state,
     });
     await this.save(property);
-    return property;
+    return res
+      .status(HttpStatus.CREATED)
+      .json({ message: 'Property created successfully' });
   }
 
   private applyFilters(
@@ -146,20 +177,23 @@ export class PropertiesRepository extends Repository<Property> {
 
   async updateProperties() {}
 
-  async deleteProperty(id: string) {
-    const result = await this.createQueryBuilder('property')
-      .delete()
-      .where('id = :id', { id })
-      .execute();
-
-    if (result.affected === 0) {
+  async deleteProperty(id: string, user: User) {
+    const property = await this.findOneBy({ id });
+    if (!property) {
       throw new NotFoundException('Property not found');
     }
 
-    return { message: 'Property deleted successfully' };
+    if (property.user.id === user.id || user.type === UserType.ADMIN) {
+      const result = await this.delete({ id });
+      return { message: 'Property deleted successfully' };
+    }
+
+    throw new ForbiddenException(
+      'You are not authorized to perform this action.',
+    );
   }
 
-  async toggleFavorite(id: string, user: User) {
+  async toggleFavorite(id: string, user: User, res: Response) {
     const property = await this.findOne({
       where: { id },
       relations: ['likedBy'], // Ensure we load the relation
@@ -187,8 +221,8 @@ export class PropertiesRepository extends Repository<Property> {
     // Save the updated property
     await this.save(property);
 
-    return {
+    return res.status(HttpStatus.OK).json({
       message: `Property has been ${alreadyLiked ? 'removed from' : 'added to'} favorites`,
-    };
+    });
   }
 }
