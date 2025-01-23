@@ -9,6 +9,21 @@ export class UserService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
+
+  async getProfile(user: User) {
+    return {
+      id: user.id,
+      name: user.name,
+      lastname: user.lastname,
+      username: user.username,
+      email: user.email,
+      type: user.type,
+      profilePic: user.profilePic,
+      agency: user.agency,
+      mobile: user.mobile,
+    };
+  }
+
   async getFavoriteProperties(user: User) {
     return await this.userRepository.getFavoriteProperties(user);
   }

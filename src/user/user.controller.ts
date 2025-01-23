@@ -9,6 +9,13 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Get('profile')
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
+  getProfile(@GetUser() user: User) {
+    return this.userService.getProfile(user);
+  }
+
   @Get('favorite-properties')
   @UseGuards(AuthGuard())
   @ApiBearerAuth()

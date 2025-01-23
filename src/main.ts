@@ -29,6 +29,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3001);
 
-  console.log(`APP IS RUNNING ON PORT ${await app.getUrl()}/api`);
+  console.log(`Swagger: ${await app.getUrl()}/api`);
 }
 bootstrap();
