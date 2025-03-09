@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create.user.dto';
 import {
   ConflictException,
@@ -7,9 +7,16 @@ import {
 
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/user/user.entity';
+import { extractKeyValue } from 'src/utils/extractKeyValue';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './jwt-payload.interface';
+import { access } from 'fs';
 
 export class UsersRepository extends Repository<User> {
-  constructor(dataSource: DataSource) {
+  constructor(
+    dataSource: DataSource,
+    private jwtService: JwtService,
+  ) {
     super(User, dataSource.manager);
   }
 
@@ -38,13 +45,22 @@ export class UsersRepository extends Repository<User> {
 
     try {
       await this.save(user);
+      const payload: JwtPayload = { username };
+      const accessToken = this.jwtService.sign(payload);
       return {
         success: true,
         message: 'User created successfully',
+        accessToken,
       };
     } catch (error) {
-      if (error.code === '23505') {
-        throw new ConflictException('User already exists');
+      if (
+        error instanceof QueryFailedError &&
+        error.driverError.detail.includes('already exists')
+      ) {
+        const { field, value } = extractKeyValue(error.driverError.detail);
+        throw new ConflictException({
+          message: `${field} with value ${value} is already exist.`,
+        });
       }
       console.log(error);
       throw new InternalServerErrorException();

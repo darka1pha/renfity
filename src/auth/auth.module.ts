@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersRepository } from './auth.repository';
 import { DataSource } from 'typeorm';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { User } from 'src/user/user.entity';
 
@@ -14,8 +14,9 @@ import { User } from 'src/user/user.entity';
     AuthService,
     {
       provide: UsersRepository,
-      useFactory: (dataSource) => new UsersRepository(dataSource),
-      inject: [DataSource],
+      useFactory: (dataSource, jwtService) =>
+        new UsersRepository(dataSource, jwtService),
+      inject: [DataSource, JwtService],
     },
     JwtStrategy,
   ],
