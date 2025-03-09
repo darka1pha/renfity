@@ -6,6 +6,7 @@ import {
   IsString,
   Matches,
   MinLength,
+  ValidateIf,
 } from 'class-validator';
 import { UserType } from '../../user/enum/user.type.enum';
 
@@ -22,8 +23,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   name: string;
 
+  @ValidateIf((o) => o.type === UserType.AGENCY) // Only validate if user type is AGENCY
   @IsString()
-  @IsEmpty()
+  @IsNotEmpty()
   agency: string;
 
   @IsEnum(UserType)
