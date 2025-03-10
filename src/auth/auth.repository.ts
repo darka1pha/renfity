@@ -60,6 +60,7 @@ export class UsersRepository extends Repository<User> {
         const { field, value } = extractKeyValue(error.driverError.detail);
         throw new ConflictException({
           message: `${field} with value ${value} is already exist.`,
+          success: false,
         });
       }
       console.log(error);
