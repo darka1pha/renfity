@@ -22,6 +22,7 @@ import { User } from 'src/user/user.entity';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
 import { PropertyStatus } from './enum';
+import { ExtractUser } from 'src/user/extract-user.decorator';
 
 @Controller('properties')
 export class PropertiesController {
@@ -45,7 +46,7 @@ export class PropertiesController {
 
   @Get()
   getProperties(
-    @GetUser() user: User,
+    @ExtractUser() user: User,
     @Query() filterDto: GetPropertiesFilterDto,
   ) {
     return this.propertiesService.getProperties(user, filterDto);

@@ -124,7 +124,6 @@ export class PropertiesRepository extends Repository<Property> {
       .leftJoin('property.city', 'city')
       .addSelect(['property', 'city.name'])
       .leftJoin('property.user', 'user')
-      .addSelect(['property', 'user.name', 'user.lastname', 'user.id'])
       .leftJoinAndSelect('property.facilities', 'facilities')
       .leftJoin('property.likedBy', 'likedBy')
       .addSelect(['property', 'likedBy.id'])
@@ -139,10 +138,16 @@ export class PropertiesRepository extends Repository<Property> {
     const properties = await query.getMany();
 
     // Add isLiked field dynamically
-    return properties.map((property) => ({
-      ...property,
-      isLiked: property.likedBy.some((likedUser) => likedUser.id === user.id),
-    }));
+    return properties.map((property) =>
+      user
+        ? {
+            ...property,
+            isLiked: property.likedBy.some(
+              (likedUser) => likedUser.id === user.id,
+            ),
+          }
+        : property,
+    );
   }
 
   async getPropertiesById(id: string, user: User) {

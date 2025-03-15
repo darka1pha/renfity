@@ -12,6 +12,10 @@ import { MediaModule } from './media/media.module';
 import { UserModule } from './user/user.module';
 import { FacilitiesModule } from './facilities/facilities.module';
 
+// File Serving
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env.local' }),
@@ -25,6 +29,11 @@ import { FacilitiesModule } from './facilities/facilities.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      exclude: ['/api/(.*)'],
+    }),
+
     PropertiesModule,
     FacilitiesModule,
     AuthModule,
