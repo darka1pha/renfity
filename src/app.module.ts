@@ -31,7 +31,8 @@ import { join } from 'path';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
-      exclude: ['/api/(.*)'],
+      serveRoot: '/uploads',
+      exclude: ['/api*'],
     }),
 
     PropertiesModule,

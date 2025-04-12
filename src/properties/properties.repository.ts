@@ -14,6 +14,7 @@ import { City } from 'src/cities/cities.entity';
 import { State } from 'src/states/states.entity';
 import { UserType } from 'src/user/enum/user.type.enum';
 import { Response } from 'express';
+import { getPublicUrl } from 'src/utils/getPublicUrl';
 
 export class PropertiesRepository extends Repository<Property> {
   constructor(dataSource: DataSource) {
@@ -137,17 +138,21 @@ export class PropertiesRepository extends Repository<Property> {
 
     const properties = await query.getMany();
 
-    // Add isLiked field dynamically
-    return properties.map((property) =>
-      user
-        ? {
-            ...property,
-            isLiked: property.likedBy.some(
-              (likedUser) => likedUser.id === user.id,
-            ),
-          }
-        : property,
-    );
+    // Add isLiked and map media URLs
+    return properties.map((property) => {
+      const mediaUrls: string[] =
+        property.media?.map((media) => getPublicUrl(media.fileUrl)) || [];
+
+      const isLiked = user
+        ? property.likedBy.some((likedUser) => likedUser.id === user.id)
+        : null;
+
+      return {
+        ...property,
+        media: mediaUrls,
+        isLiked,
+      };
+    });
   }
 
   async getPropertiesById(id: string, user: User) {
@@ -175,12 +180,17 @@ export class PropertiesRepository extends Repository<Property> {
     const property = await query.getOne();
 
     if (!property) {
-      throw new NotFoundException('Property not found'); // Optional: handle not found case
+      throw new NotFoundException('Property not found');
     }
+
+    // Map media fileUrls to public URLs
+    const mediaWithPublicUrls =
+      property.media?.map((media) => getPublicUrl(media.fileUrl)) || [];
 
     // Add the isLiked field dynamically
     return {
       ...property,
+      media: mediaWithPublicUrls,
       isLiked: !!user
         ? property.likedBy.some((likedUser) => likedUser.id === user.id)
         : null,
