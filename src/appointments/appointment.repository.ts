@@ -5,6 +5,7 @@ import { CreateAppointmentDto } from './dto/create.appointment.dto';
 import { Property } from 'src/properties/entities';
 import { UserType } from 'src/user/enum/user.type.enum';
 import { User } from 'src/user/user.entity';
+import { AppointmentStatus } from './enum/appointment.status.enum';
 
 export class AppointmentsRepository extends Repository<Appointment> {
   constructor(dataSource: DataSource) {
@@ -38,7 +39,7 @@ export class AppointmentsRepository extends Repository<Appointment> {
       customer: user,
       property,
       requestedDate,
-      status: 'PENDING', // Default status
+      status: AppointmentStatus.PENDING,
     });
 
     return this.save(appointment);

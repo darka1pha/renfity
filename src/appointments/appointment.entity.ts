@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AppointmentStatus } from './enum/appointment.status.enum';
 
 @Entity()
 export class Appointment {
@@ -16,8 +17,8 @@ export class Appointment {
   @Column({ type: 'timestamp' })
   requestedDate: Date;
 
-  @Column({ type: 'enum', enum: ['PENDING', 'APPROVED', 'REJECTED'] })
-  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  @Column({ type: 'enum', enum: AppointmentStatus })
+  status: AppointmentStatus;
 
   @ManyToOne(() => User, (user) => user.appointmentRequests)
   @JoinColumn({ name: 'customerId' })
