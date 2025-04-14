@@ -1,4 +1,4 @@
-import { DataSource, QueryFailedError, Repository } from 'typeorm';
+import { DataSource, ILike, QueryFailedError, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create.user.dto';
 import {
   ConflictException,
@@ -10,7 +10,6 @@ import { User } from 'src/user/user.entity';
 import { extractKeyValue } from 'src/utils/extractKeyValue';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
-import { access } from 'fs';
 
 export class UsersRepository extends Repository<User> {
   constructor(
@@ -32,6 +31,19 @@ export class UsersRepository extends Repository<User> {
     // hash
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(password, salt);
+
+    const existingUser = await this.findOne({
+      where: {
+        username: ILike(username),
+      },
+    });
+
+    if (existingUser) {
+      throw new ConflictException({
+        message: `User with username ${username} already exists.`,
+        success: false,
+      });
+    }
 
     const user = this.create({
       username,
